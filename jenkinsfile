@@ -19,15 +19,16 @@ pipeline {
             }
             }
         }
-        stage('Static code Analisys') {
+         stage("SonarQube Scan") {
             steps {
             script{
-                def mvn = tool 'project-maven';
+                def scannerHome = tool 'SonarScanner';
                 withSonarQubeEnv() {
-                    sh "${mvn}/bin/mvn clean verify sonar:sonar -Dsonar.projectKey=demo-backendapp"
+                    sh "${scannerHome}/bin/sonar-scanner"
                 }
             }
+                
+            }
         }
-        } 
     }
 }
