@@ -3,6 +3,19 @@ pipeline {
     tools {
         maven "project-maven"
     }
+    environment {
+        scannerHome = tool "SonarScanner"
+               //This can be nexus 3 or Nexus 2
+        NEXUS_VERSION= "project-nexus"
+        //This can be http or https
+        NEXUS_PROTOCOL= "http"
+        //Where your Nexus is running
+        NEXUS_URL= "192.168.56.102:8081"
+        // Repository Name where we will upload the artifacts
+        NEXUS_REPOSITORY= "CloudTrain-mvn-BackendApp-Snapshot-Artifact"
+        // Jenkins credentials id to authenticate to Nexus OSS
+        NEXUS_CREDENTIAL_ID= "nexus"
+    }
     stages {
         stage('Git Checkout') {
             steps {
@@ -11,7 +24,9 @@ pipeline {
         }
         stage('Maven Goal') {
             steps {
+            script{
                 sh "mvn clean install package"
+            }
             }
         }
         
